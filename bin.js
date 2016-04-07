@@ -8,10 +8,17 @@
 var path = require('path')
 var spawn = require('child_process').spawn
 
-var binPath = require("./index.js").path
+var nssm = require("./index.js")
 
 var args = process.argv.slice(2)
 
+if (["--version", "-v"].indexOf(args[0])>-1) {
+  console.log(nssm.version)
+  console.log(nssm.path)
+  process.exit(0)
+}
+
+var binPath = nssm.path;
 // For Node 0.6 compatibility, pipe the streams manually, instead of using
 // `{ stdio: 'inherit' }`.
 var cp = spawn(binPath, args)
@@ -20,7 +27,7 @@ cp.stderr.pipe(process.stderr)
 process.stdin.pipe(cp.stdin)
 
 cp.on('error', function (err) {
-  console.error('Error executing phantom at', binPath)
+  console.error('Error executing nssm at', binPath)
   console.error(err.stack)
 })
 
