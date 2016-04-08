@@ -1,5 +1,5 @@
 {
-  "name": "nssm-prebuilt",
+  "name": "@mh-cbon/nssm-prebuilt",
   "version": "0.0.1",
   "description": "NSSM prebuilt binary downloader and installer",
   "main": "index.js",
