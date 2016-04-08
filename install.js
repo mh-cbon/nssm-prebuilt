@@ -1,6 +1,5 @@
 var pkg         = require('./package.json')
 var hyperquest  = require('hyperquest')
-var extract     = require('extract-zip')
 var path        = require('path');
 var async       = require('async');
 var fs          = require('fs');
