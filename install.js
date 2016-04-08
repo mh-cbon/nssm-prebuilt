@@ -5,6 +5,9 @@ var path        = require('path');
 var async       = require('async');
 var fs          = require('fs');
 var Spinner     = require('cli-spinner').Spinner;
+var yauzl       = require("yauzl");
+var mkdirp      = require("mkdirp");
+
 
 var version     = pkg["x-version"];
 var url         = "https://nssm.cc/release/nssm-" + version + ".zip";
@@ -49,7 +52,38 @@ var createUnzipDir = function (then) {
 
 var unzipfile = function (then) {
   console.log("Unzipping to %s", targetPath)
-  extract(dlFile, {dir: targetPath}, then)
+  yauzl.open(dlFile, {lazyEntries: true}, function(err, zipfile) {
+    if (err) throw err;
+    zipfile.readEntry();
+    zipfile.on("error", console.error.bind(console));
+    zipfile.once("end", function() {
+      zipfile.close();
+      then();
+    });
+    zipfile.on("entry", function(entry) {
+      if (/\/$/.test(entry.fileName)) {
+        // directory file names end with '/'
+        mkdirp(path.join(targetPath, entry.fileName), function(err) {
+          if (err) throw err;
+          zipfile.readEntry();
+        });
+      } else {
+        // file entry
+        zipfile.openReadStream(entry, function(err, readStream) {
+          if (err) throw err;
+          // ensure parent directory exists
+          var k = path.join(targetPath, path.dirname(entry.fileName));
+          mkdirp(k, function(err) {
+            if (err) throw err;
+            readStream.pipe(fs.createWriteStream(path.join(k, path.basename(entry.fileName))));
+            readStream.on("end", function() {
+              zipfile.readEntry();
+            });
+          });
+        });
+      }
+    });
+  });
 }
 
 var installedPath = require('./index.js').path;
