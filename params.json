@@ -1,0 +1,6 @@
+{
+  "name": "Nssm-prebuilt",
+  "tagline": "Node package for prebuilt nssm",
+  "body": "# nssm-prebuilt\r\n\r\nNode package to download and install `nssm` on windows.\r\n\r\n# Install\r\n\r\n```sh\r\nnpm install @mh-cbon/nssm-prebuilt --save\r\n```\r\n\r\n# Usage\r\n\r\n```js\r\nvar nssm = require('@mh-cbon/nssm-prebuilt')\r\n\r\nconsole.log(\"nssm version %s availabe at path %s\", nssm.version, nssm.path)\r\n```\r\n\r\n# Binary\r\n\r\nThis package also comes with a binary proxy to `nssm.exe` file.\r\n\r\n```sh\r\n$ npm install @mh-cbon/nssm-prebuilt -g\r\n$ nssm --version\r\n2.24\r\nC:\\some\\path\\to\\nssm.exe\r\n```\r\n\r\n# Read more\r\n\r\n- https://nssm.cc/\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
