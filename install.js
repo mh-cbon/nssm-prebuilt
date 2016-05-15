@@ -90,6 +90,9 @@ fs.access(installedPath, fs.F_OK, function (err) {
   if (!err) {
     console.log("File already available at %s", installedPath)
     console.log("All done !")
+  } else if(!process.platform.amtch(/^win/)) {
+    console.log("Incompatible platform %s", process.platform)
+    console.log("All done !")
   } else {
     async.series([
         downloadFile,
